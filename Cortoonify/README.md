@@ -6,7 +6,10 @@ Cartoonify Turns your photo into a cartoon drawing.
 ## Before:
 <img width="960" alt="1" src="https://user-images.githubusercontent.com/70604119/228589785-37abef01-afba-4f63-92cf-8725a9637dab.png">
 ## After:
+<img width="960" alt="2" src="https://user-images.githubusercontent.com/70604119/228590367-ce104d7f-8276-483e-b603-5aa142ddffe2.png">
 
 ## Video
-https://user-images.githubusercontent.com/70604119/228586017-5d012251-9018-427e-9e00-65ba8f7f366c.mp4
+
+https://user-images.githubusercontent.com/70604119/228590545-7902c552-3650-4822-b989-391c485df29f.mp4
+
 
