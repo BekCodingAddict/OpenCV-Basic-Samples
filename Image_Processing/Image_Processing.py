@@ -14,21 +14,28 @@ from random import randint
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
+        # No external window yet for load image function.
         self.w=None
-
+        
+        # No external window yet for inputs of crop image function.
         self.inputWindowOfRotation=None
 
+        # chance color balance window
         self.ccbWindow=None
-
+        
+        # adjust brightness window
         self.adjBrgWindow=None
 
+        # adjust saturation window
         self.adjSatWindow=None
 
+        # flip image window
         self.flipImage=None
 
+        # adjust contrast windpw
         self.adjConWindow=None
 
+        #Setting Up  x, y coordinates and buttons measurments
         self.warning=None
         xtop=10
         yleft=10
@@ -38,12 +45,16 @@ class MainWindow(QMainWindow):
 
         sizeObject=QDesktopWidget().screenGeometry()
 
+        # Access screen dimensions of image - screen accordance
         self.width=int(sizeObject.getRect()[2])
         self.height=int(sizeObject.getRect()[3])
 
+        #Declaration of image size
         self.imgWidth=0
         self.imgHeight=0
 
+        # Set up message area widget
+        # This for guiding user when deal with an error 
         self.message=QLabel(self)
         self.message.setFont(QFont("Arial",12))
         self.message.setGeometry(920,60,700,200)
