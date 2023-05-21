@@ -57,14 +57,54 @@ class MainWindow(QMainWindow):
         # This for guiding user when deal with an error 
         self.message=QLabel(self)
         self.message.setFont(QFont("Arial",12))
-        self.message.setGeometry(920,60,700,200)
-        self.message.setStyleSheet("color:red; border:1px solid black; border-radius:8px;")
+        self.message.setGeometry(400,50,1480,160)
+        self.message.setStyleSheet("color:white; border:1px solid black;  border-color: gray; border-style: outset;  border-width: 2px; border-radius:8px;background-color:hsl(206,90%,74%);")
+        self.message.setText("Hello")
 
+        hFile=QLabel(self)
+        hFile.setText("File")
+        hFile.setFont(QFont("Arial",20))
+        hFile.move(xtop+int(buttonHeight/4),yleft)
+
+
+        loadButton=QPushButton(self)
+
+
+        loadButton.setText("Load Image")
+
+        loadButton.setGeometry(xtop,yleft+buttonHeight,buttonWidth,buttonHeight)
+
+        loadButton.clicked.connect(self.show_new_window)
 
         #Set coordinate and size of main screen of application
         self.setGeometry(0,0,self.width,self.height)
         self.setWindowTitle("Final Term OpenCv Image Processing Project")
+        # self.setStyleSheet("background-color:hsl(206,100%,60%);")
 
+
+        self.loadedImage=QLabel(self)
+
+        self.loadedImage.setScaledContents(True)
+        self.loadedImage.setFixedHeight(int(self.height/2))
+        self.loadedImage.setFixedWidth(int(self.width/3))
+        self.loadedImagePath=""
+        self.loadedImage.move(400,300)
+        self.loadedImage.setStyleSheet("border:1px solid hsl(27,50%,36.9%); border-radius:10px;")
+
+    def show_new_window(self, checked):
+        if self.w is None:
+            self.w=QFileDialog.Option()
+            fileName,_=QFileDialog.getOpenFileName(self,"Open Image","","All Files(*.jpg *.png *.jpeg)",options=self.w)
+
+
+            pixmap=QPixmap(fileName)
+            pixmap2=pixmap.scaledToWidth(int(self.width/2))
+            self.loadedImage.setPixmap(pixmap2)
+            self.loadedImage.adjustSize()
+            self.loadedImagePath=fileName
+
+        self.w=None
+            
 
 app=QApplication(sys.argv)
 main=MainWindow()
