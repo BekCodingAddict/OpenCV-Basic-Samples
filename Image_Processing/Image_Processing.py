@@ -66,30 +66,28 @@ class MainWindow(QMainWindow):
         hFile.setFont(QFont("Arial",20))
         hFile.move(xtop+int(buttonHeight/4),yleft)
 
-
+        #Save Button Widget
         loadButton=QPushButton(self)
-
-
         loadButton.setText("Load Image")
-
         loadButton.setGeometry(xtop,yleft+buttonHeight,buttonWidth,buttonHeight)
-
         loadButton.clicked.connect(self.show_new_window)
 
-        #Set coordinate and size of main screen of application
-        self.setGeometry(0,0,self.width,self.height)
-        self.setWindowTitle("Final Term OpenCv Image Processing Project")
-        # self.setStyleSheet("background-color:hsl(206,100%,60%);")
 
-
+        #Loaded Image widget
         self.loadedImage=QLabel(self)
-
+        #Scale image for screen accordance
         self.loadedImage.setScaledContents(True)
         self.loadedImage.setFixedHeight(int(self.height/2))
         self.loadedImage.setFixedWidth(int(self.width/3))
         self.loadedImagePath=""
         self.loadedImage.move(400,300)
         self.loadedImage.setStyleSheet("border:1px solid hsl(27,50%,36.9%); border-radius:10px;")
+
+        #Set coordinate and size of main screen of application
+        self.setGeometry(0,0,self.width,self.height)
+        self.setWindowTitle("Final Term OpenCv Image Processing Project")
+        # self.setStyleSheet("background-color:hsl(206,100%,60%);")
+
 
     def show_new_window(self, checked):
         if self.w is None:
