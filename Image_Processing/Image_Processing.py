@@ -57,21 +57,55 @@ class MainWindow(QMainWindow):
         # This for guiding user when deal with an error 
         self.message=QLabel(self)
         self.message.setFont(QFont("Arial",12))
-        self.message.setGeometry(400,50,1480,160)
-        self.message.setStyleSheet("color:white; border:1px solid black;  border-color: gray; border-style: outset;  border-width: 2px; border-radius:8px;background-color:hsl(206,90%,74%);")
+        self.message.setGeometry(400,50,1450,160)
+        self.message.setStyleSheet("color:white; border:3px solid black;  border-color: gray; border-style: outset;  border-width: 2px; border-radius:8px;background-color:hsl(206,90%,74%);")
         self.message.setText("Hello")
 
+        #File text area widget
         hFile=QLabel(self)
         hFile.setText("File")
         hFile.setFont(QFont("Arial",20))
         hFile.move(xtop+int(buttonHeight/4),yleft)
 
+        #load button widget
         #Save Button Widget
         loadButton=QPushButton(self)
+        #Set text of button
         loadButton.setText("Load Image")
-        loadButton.setGeometry(xtop,yleft+buttonHeight,buttonWidth,buttonHeight)
+        #Set button coordinates and its width, height
+        loadButton.setGeometry(xtop+20,yleft+buttonHeight,buttonWidth,buttonHeight)
+        #Runs function (show_new_window) when clicked button
         loadButton.clicked.connect(self.show_new_window)
+        loadButton.setStyleSheet("QPushButton:hover{background-color:green;color:white;} border-radius:5px; border:2px doted black;background-color:green;color:white;")
 
+        #Save button widget
+        saveButton=QPushButton(self)
+        saveButton.setText("Save Image")
+        saveButton.setGeometry(xtop+180,yleft+buttonHeight,buttonWidth,buttonHeight)
+        saveButton.clicked.connect(self.save)
+        saveButton.setStyleSheet("QPushButton:hover{background-color:green;color:white;};border-radius:5px; border:2px doted black;background-color:green;color:white;")
+
+        #-------EDIT AREA---------
+        #Edit text area widget
+        hEdit=QLabel(self)
+        hEdit.setText("Edit")
+        hEdit.setFont(QFont("Arial",20))
+        hEdit.move(xtop+int(buttonHeight/4),xtop+110)
+
+        #Blur button widget
+        blurButton=QPushButton(self)
+        blurButton.setText("Blur Image")
+        blurButton.setGeometry(xtop+20,yleft+3*buttonHeight,buttonWidth,buttonHeight)
+        blurButton.clicked.connect(self.blur)
+        blurButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+
+
+        #Deblur button widget
+        deblurButton=QPushButton(self)
+        deblurButton.setText("Deblur Image")
+        deblurButton.setGeometry(xtop+180,yleft+3*buttonHeight,buttonWidth,buttonHeight)
+        deblurButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        deblurButton.clicked.connect(self.deblur)
 
         #Loaded Image widget
         self.loadedImage=QLabel(self)
@@ -81,7 +115,16 @@ class MainWindow(QMainWindow):
         self.loadedImage.setFixedWidth(int(self.width/3))
         self.loadedImagePath=""
         self.loadedImage.move(400,300)
-        self.loadedImage.setStyleSheet("border:1px solid hsl(27,50%,36.9%); border-radius:10px;")
+        self.loadedImage.setStyleSheet("border:5px solid hsl(27,50%,36.9%); border-radius:10px;")
+
+
+        self.manipulatedImage=QLabel(self)
+
+        self.manipulatedImage.setScaledContents(True)
+        self.manipulatedImage.setFixedHeight(int(self.height/2))
+        self.manipulatedImage.setFixedWidth(int(self.width/3))
+        self.manipulatedImage.move(int(self.width/1.6),300)
+        self.manipulatedImage.setStyleSheet("color:white; border:5px solid black;  border-color: gray; border-style: outset; border-radius:8px;background-color:hsl(206,90%,74%);")
 
         #Set coordinate and size of main screen of application
         self.setGeometry(0,0,self.width,self.height)
@@ -102,7 +145,69 @@ class MainWindow(QMainWindow):
             self.loadedImagePath=fileName
 
         self.w=None
-            
+
+    def save(self):
+        try:
+            if(len(self.loadedImagePath)==0):
+                raise FileNotFoundError 
+            self.manipulatedImage.pixmap().save("SavedImage.jpg","JPG")
+            self.message.setText("")
+        
+        except FileNotFoundError:
+            self.message.setText("You have to create manipulated image to save it!")
+        except Exception as E:
+            self.message.setText(str(E))
+
+    def blur(self):
+        try:
+            #access loaded Image
+            image=cv2.imread(self.loadedImagePath)
+            if(image is None):
+                raise FileNotFoundError
+
+            #Blur Image 
+            blurImg=cv2.blur(image(9,9))
+
+            #Save blured image temporarly
+            cv2.imwrite("Temp.jpg",blurImg)
+
+            pixmap=QPixmap("./temp.jpg")
+            pixmap2=pixmap.scaledToWidth(int(self.width/2))  
+
+            self.manipulatedImage.setPixmap(pixmap2)
+            self.manipulatedImage.adjustSize()
+            #Set message text to empty, when process s successfull
+            self.message.setText("") 
+        except FileNotFoundError:
+            self.message.setText("You have to Load an Image before Bluring")
+
+        except Exception as E:
+            self.message.setText(str(E))
+
+    def deblur(self):
+        try:
+            image=cv2.imread(self.loadedImagePath)
+            if(image is None):
+                raise FileNotFoundError
+            sharpen_karnel=np.array([[-1,-1,-1],[-1,9,-1],[-1,-1,-1]])
+            sharpen=cv2.filter2D(image,-1,sharpen_karnel)
+
+            cv2.imwrite("temp.jpg",sharpen)
+
+            pixmap=QPixmap("./temp.jpg")
+            pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+            self.manipulatedImage.setPixmap(pixmap2)
+            self.manipulatedImage.adjustSize()
+
+            self.message.setText("")
+
+        except FileNotFoundError:
+            self.message.setText("You have to Load an Image before debluring!")
+        except Exception as E:
+            self.message.setText(str(E))
+            print(E)
+
 
 app=QApplication(sys.argv)
 main=MainWindow()
