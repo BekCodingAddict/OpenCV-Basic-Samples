@@ -107,6 +107,12 @@ class MainWindow(QMainWindow):
         deblurButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
         deblurButton.clicked.connect(self.deblur)
 
+        reverseColorButton=QPushButton(self)
+        reverseColorButton.setText("Reverse Color")
+        reverseColorButton.setGeometry(xtop+20,(yleft+yleft)+(4*buttonHeight),buttonWidth,buttonHeight)
+        reverseColorButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        reverseColorButton.clicked.connect(self.reverseColor)
+
         #Loaded Image widget
         self.loadedImage=QLabel(self)
         #Scale image for screen accordance
@@ -117,9 +123,9 @@ class MainWindow(QMainWindow):
         self.loadedImage.move(400,300)
         self.loadedImage.setStyleSheet("border:5px solid hsl(27,50%,36.9%); border-radius:10px;")
 
-
+        #Manipulate Image Widget
         self.manipulatedImage=QLabel(self)
-
+        #Scale image for screen accordance
         self.manipulatedImage.setScaledContents(True)
         self.manipulatedImage.setFixedHeight(int(self.height/2))
         self.manipulatedImage.setFixedWidth(int(self.width/3))
@@ -135,9 +141,10 @@ class MainWindow(QMainWindow):
     def show_new_window(self, checked):
         if self.w is None:
             self.w=QFileDialog.Option()
+            #Get FileName of image
             fileName,_=QFileDialog.getOpenFileName(self,"Open Image","","All Files(*.jpg *.png *.jpeg)",options=self.w)
 
-
+            #Orginal Image Widget
             pixmap=QPixmap(fileName)
             pixmap2=pixmap.scaledToWidth(int(self.width/2))
             self.loadedImage.setPixmap(pixmap2)
@@ -148,11 +155,12 @@ class MainWindow(QMainWindow):
 
     def save(self):
         try:
+            #If path is empty, raise FileNotFoundError
             if(len(self.loadedImagePath)==0):
                 raise FileNotFoundError 
             self.manipulatedImage.pixmap().save("SavedImage.jpg","JPG")
-            self.message.setText("")
-        
+            self.message.setText("Image Saved Successfully!")
+        #Display Error message
         except FileNotFoundError:
             self.message.setText("You have to create manipulated image to save it!")
         except Exception as E:
@@ -207,6 +215,30 @@ class MainWindow(QMainWindow):
         except Exception as E:
             self.message.setText(str(E))
             print(E)
+
+    def reverseColor(self):
+        try:
+            image=cv2.imread(self.loadedImagePath)
+
+            if(image is None):
+                raise FileNotFoundError
+            
+
+            image=(255-image)
+            cv2.imwrite("temp.jpg",image)
+
+            pixmap=QPixmap("./temp.jpg")
+            pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+            self.manipulatedImage.setPixmap(pixmap2)
+            self.manipulatedImage.adjustSize()
+            self.message.setText("")
+
+        except FileNotFoundError:
+            self.message.setText("You have to Load an Image before reversing color!")
+        
+        except Exception as E:
+            self.message.setText(str(E))
 
 
 app=QApplication(sys.argv)
