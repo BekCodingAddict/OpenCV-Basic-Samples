@@ -17,7 +17,9 @@ class MainWindow(QMainWindow):
         # No external window yet for load image function.
         self.w=None
         
-        # No external window yet for inputs of crop image function.
+        #No external window yet for inputs of crop image function
+        self.inputWindow=None
+        # No external window yet for inputs of rotate image function
         self.inputWindowOfRotation=None
 
         # chance color balance window
@@ -107,11 +109,31 @@ class MainWindow(QMainWindow):
         deblurButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
         deblurButton.clicked.connect(self.deblur)
 
+        #Reverse Color Button Widget
         reverseColorButton=QPushButton(self)
         reverseColorButton.setText("Reverse Color")
         reverseColorButton.setGeometry(xtop+20,(yleft+yleft)+(4*buttonHeight),buttonWidth,buttonHeight)
         reverseColorButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
         reverseColorButton.clicked.connect(self.reverseColor)
+
+        #Grayscale button widget
+        grayScaleButton=QPushButton(self)
+        grayScaleButton.setText("GrayScale Image")
+        grayScaleButton.setGeometry(xtop+180,(yleft+yleft)+(4*buttonHeight),buttonWidth,buttonHeight)
+        grayScaleButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        grayScaleButton.clicked.connect(self.grayScale)
+        
+
+        #Crop button widget
+        cropButton=QPushButton(self)
+        cropButton.setText("Crop Image")
+        cropButton.setGeometry(xtop+20,yleft*3+5*buttonHeight,buttonWidth,buttonHeight)
+        cropButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        cropButton.clicked.connect(self.crop)
+
+
+
+
 
         #Loaded Image widget
         self.loadedImage=QLabel(self)
@@ -239,6 +261,70 @@ class MainWindow(QMainWindow):
         
         except Exception as E:
             self.message.setText(str(E))
+
+    def grayScale(self):
+        try:
+            image=cv2.imread(self.loadedImagePath)
+            if(image is None):
+                raise FileNotFoundError
+            gray_image=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+            cv2.imwrite("temp.jpg",gray_image)
+
+            pixmap=QPixmap("./temp.jpg")
+            pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+            self.manipulatedImage.setPixmap(pixmap2)
+            self.manipulatedImage.adjustSize()
+
+            self.message.setText("")
+
+        #Display relevant error message!
+        except FileNotFoundError:
+            self.message.setText("You have to Load an Image before Gray Scaling!")
+        except Exception as E:
+            self.message.setText(str(E))
+            print(E)
+
+    def crop(self):
+        if self.inputWindow is None:
+            try:
+                #self.inputWindow=QWidget()
+                if(len(self.loadedImagePath)==0):
+                    raise FileNotFoundError
+                start,okPressed=QInputDialog.getText(self, "Get coordinates","Enter Starting Point (Top Left:)\n in format x,y \n for example 120,85",QLineEdit.Normal,"",)
+                end,okPressed=QInputDialog.getText(self,"Get coordinates","Enter Ending Point (Bottom Right):\n in format x.y\n for example 120,85",QLineEdit.Normal,"")
+
+                image=cv2.imread(self.loadedImagePath)
+                if(image is None):
+                    raise FileNotFoundError
+                
+                if(len(start.split(","))!=2 or len(end.split(","))!=2):
+                    raise Exception
+                
+                image=np.array(image)
+
+                #coordinates of starting point (top-left)
+                x1=int (start.split(",")[0])
+                y1=int(start.split(",")[1])
+
+                #coordinates of end point (right-bottom)
+                x2=int(end.split(",")[0])
+                y2=int(end.split(",")[1])
+
+                #crop image with inputs
+                croppedImage=image[x1:x2,y1:y2]
+
+                cv2.imwrite("temp.jpg",croppedImage)
+                pixmap=QPixmap("./temp.jpg")
+                pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+                self.manipulatedImage.setPixmap(pixmap2)
+                self.manipulatedImage.adjustSize()
+            except FileNotFoundError:
+                self.message.setText("You have to Load an Image befor Cropping!")
+            except Exception as E:
+                self.message.setText("Invalid Input, \n It can be a good idea to review pixel size of orginal image by giving inputs!")
+                print(E)
 
 
 app=QApplication(sys.argv)
