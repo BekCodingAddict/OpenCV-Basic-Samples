@@ -131,7 +131,26 @@ class MainWindow(QMainWindow):
         cropButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
         cropButton.clicked.connect(self.crop)
 
+        #Flip button widget
+        flipButton=QPushButton(self)
+        flipButton.setText("Flip Image")
+        flipButton.setGeometry(xtop+180,yleft*3+5*buttonHeight,buttonWidth,buttonHeight)
+        flipButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        flipButton.clicked.connect(self.flip)
 
+        #Mirror button widget
+        mirrorButton=QPushButton(self)
+        mirrorButton.setText("Mirror Image")
+        mirrorButton.setGeometry(xtop+20,yleft*4+6*buttonHeight,buttonWidth,buttonHeight)
+        mirrorButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        mirrorButton.clicked.connect(self.mirror)
+
+        #Rotate button widget
+        rotateButton=QPushButton(self)
+        rotateButton.setText("Rotate Image")
+        rotateButton.setGeometry(xtop+180,yleft*4+6*buttonHeight,buttonWidth,buttonHeight)
+        rotateButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        rotateButton.clicked.connect(self.rotate)
 
 
 
@@ -325,6 +344,96 @@ class MainWindow(QMainWindow):
             except Exception as E:
                 self.message.setText("Invalid Input, \n It can be a good idea to review pixel size of orginal image by giving inputs!")
                 print(E)
+
+
+    def flip(self):
+        if (self.flipImage is None):
+            try:
+                flipValue,okPressed=QInputDialog.getText(self,"Rotation", "Enter value for your options\n" "0:Vertical Flip\n" "1:Horizontal Flip",QLineEdit.Normal,"",)
+
+                image=cv2.imread(self.loadedImagePath)
+
+                if(image is None):
+                    raise FileNotFoundError
+                elif int(flipValue)>1:
+                    raise Exception
+                
+                #Second argiment of cv2.flip is horizontal or vertical
+                #0 for vertical flip
+                # 1 for horizontal flip
+
+                flippedImage=cv2.flip(image,int(flipValue))
+                cv2.imwrite("temp.jpg",flippedImage)
+
+                pixmap=QPixmap("./temp.jpg")
+                pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+                self.manipulatedImage.setPixmap(pixmap2)
+                self.manipulatedImage.adjustSize()
+                self.message.setText("")
+
+            #Display relevant error message
+            except FileNotFoundError:
+                self.message.setText("You have to Load an Image befor Flipping!")
+            except Exception as E:
+
+                self.message.setText("Invalid Input")
+                print(E)
+
+    def mirror(self):
+        try:
+            image=cv2.imread(self.loadedImagePath)
+            if (image is None):
+                raise FileNotFoundError
+            
+            mirroredImage=cv2.flip(image,1)
+            cv2.imwrite("temp.jpg",mirroredImage)
+
+            pixmap=QPixmap("./temp.jpg")
+            pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+
+            self.manipulatedImage.setPixmap(pixmap2)
+            self.manipulatedImage.adjustSize()
+            self.message.setText("")
+
+        #Display relevant error
+        except FileNotFoundError:
+            self.message.setText("You have to Load an Image before mirroring!")
+        except Exception as E:
+            self.message.setText(str(E))
+            print(E)
+
+    def rotate(self):
+        if self.inputWindowOfRotation is None:
+            try:
+                if(len(self.loadedImagePath)==0):
+                    raise FileNotFoundError
+            
+                rotationDegree,okPressed=QInputDialog.getText(self,"Rotation","Enter the Rotation Degree", QLineEdit.Normal,"",)
+
+                image=cv2.imread(self.loadedImagePath)
+                rotatedImage=ndimage.rotate(image,int(rotationDegree))
+
+                cv2.imwrite("temp.jpg",rotatedImage)
+
+                pixmap=QPixmap("./temp.jpg")
+                pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+                self.manipulatedImage.setPixmap(pixmap2)
+                self.manipulatedImage.adjustSize()
+                self.message.setText("")
+            
+            #display relevant error message
+            except FileNotFoundError:
+
+                self.message.setText("You have to Load an Image before rotation!")
+
+            except Exception as E:
+                self.message.setText(str(E))
+                print(E)
+
+           
 
 
 app=QApplication(sys.argv)
