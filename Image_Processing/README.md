@@ -1,6 +1,6 @@
 # Image Processing 
 
-### English
+## English
 - An image processing OpenCV app refers to an application that utilizes the OpenCV library to perform various operations on images. OpenCV (Open Source Computer Vision Library) is a popular open-source computer vision and image processing library that provides a wide range of functions and algorithms for manipulating and analyzing images and videos.
 
 An image processing OpenCV app can be developed to perform tasks such as:
@@ -25,7 +25,7 @@ An image processing OpenCV app can be developed to perform tasks such as:
 
 - I think I'm not good at OpenCv using but I will try to build more functionality an ap as possible.
 
-### 한국어: 
+## 한국어: 
 
 - Image Processing OpenCV 앱은 OpenCV 라이브러리를 활용하여 이미지에 다양한 작업을 수행하는 애플리케이션을 의미합니다. OpenCV(Open Source Computer Vision Library)는 널리 알려진 오픈 소스 컴퓨터 비전 및 이미지 처리 라이브러리로, 이미지와 비디오를 조작하고 분석하기 위한 다양한 기능과 알고리즘을 제공합니다.
 
@@ -50,3 +50,21 @@ An image processing OpenCV app can be developed to perform tasks such as:
 이것은 이미지 처리 OpenCV 앱이 수행할 수 있는 예시 중 일부입니다. 구체적인 기능과 특징은 개발하려는 애플리케이션의 요구사항과 목표에 따라 다릅니다.
 
 - 저는 OpenCV 프로그래밍에 아직 능숙하지는 않지만 되도록 기능이 많은 프로그램을 만들도록 하겠습니다.
+
+
+
+## Reference(참고자료):
+
+- ### The Most used references for OpenCV Image Processing:
+
+  - [x] [Opencv.org Tutorials](https://docs.opencv.org/4.x/d7/da8/tutorial_table_of_content_imgproc.html)
+  - [x] [linegeek.com/python-image-processing](https://likegeeks.com/python-image-processing/)
+  - [x] [YouTube.com](https://www.youtube.com/)
+  - [x] [Github.com](https://github.com/)
+  - [x] Computer Vision Lecture materials 
+
+- ### The Most used references for Python GUI Programming:
+  - [x] [www.qt.io](https://doc.qt.io/qtforpython-5/)
+  - [x] [www.pythonguis.com/pyqt5](https://www.pythonguis.com/topics/pyqt5/#menu)
+  - [x] [YouTube.com](https://www.youtube.com/watch?v=rZcdhles6vQ&list=PLCC34OHNcOtpmCA8s_dpPMvQLyHbvxocY)
+  

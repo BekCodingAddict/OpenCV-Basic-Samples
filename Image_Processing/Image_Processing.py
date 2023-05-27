@@ -63,6 +63,10 @@ class MainWindow(QMainWindow):
         self.message.setStyleSheet("color:white; border:3px solid black;  border-color: gray; border-style: outset;  border-width: 2px; border-radius:8px;background-color:hsl(206,90%,74%);")
         self.message.setText("Hello")
 
+        self.Line=QLabel(self)
+        self.Line.setGeometry(370,0,10,990)
+        self.Line.setStyleSheet("border:3px solid gray; border-style:outset; background-color:hsl(206,90%,74%);")
+
         #File text area widget
         hFile=QLabel(self)
         hFile.setText("File")
@@ -268,7 +272,11 @@ class MainWindow(QMainWindow):
             #Set message text to empty, when process s successfull
             self.message.setText("") 
         except FileNotFoundError:
-            self.message.setText("You have to Load an Image before Bluring")
+            msg=QMessageBox()
+            msg.setWindowTitle("Note")
+            msg.setText("You have to Load an Image before Bluring!")
+            x=msg.exec_()
+            self.message.setText("You have to Load an Image before Bluring ☝")
 
         except Exception as E:
             self.message.setText(str(E))
