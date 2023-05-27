@@ -180,6 +180,20 @@ class MainWindow(QMainWindow):
         detectEdgesButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
         detectEdgesButton.clicked.connect(self.detectEdges)
 
+        #Add Noise to Image Button widget
+        addNoiseButton=QPushButton(self)
+        addNoiseButton.setText("Add Noise")
+        addNoiseButton.setGeometry(xtop+20,yleft*7+9*buttonHeight,buttonWidth,buttonHeight)
+        addNoiseButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        addNoiseButton.clicked.connect(self.addNoise)
+
+        #AdjCon: Adjust Contrast
+        adjConButton=QPushButton(self)
+        adjConButton.setText("Adjust Contrast")
+        adjConButton.setGeometry(xtop+180,yleft*7+9*buttonHeight,buttonWidth,buttonHeight)
+        adjConButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        adjConButton.clicked.connect(self.adjCon)
+
         #Loaded Image widget
         self.loadedImage=QLabel(self)
         #Scale image for screen accordance
@@ -615,6 +629,76 @@ class MainWindow(QMainWindow):
         except Exception as E:
             self.message.setText(str(E))
             print(E)
+
+    def addNoise(self):
+        try:
+            image=cv2.imread(self.loadedImagePath)
+            if(image is None):
+                raise FileNotFoundError
+            
+            gauss=np.random.normal(0,1,image.size)
+            gauss=gauss.reshape(image.shape[0],image.shape[1],image.shape[2]).astype('uint8')
+            mode="speckle"
+
+            if mode=="gaussian":
+                img_gauss=cv2.add(image,gauss)
+
+                cv2.imwrite("./temp.jpg",img_gauss)
+                pixmap=QPixmap("./temp.jpg")
+                pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+                self.manipulatedImage.setPixmap(pixmap2)
+                self.manipulatedImage.adjustSize()
+            
+            elif mode=="speckle":
+                noise=image+image*gauss
+
+            cv2.imwrite("./temp.jpg",noise)
+            pixmap=QPixmap("./temp.jpg")
+            pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+            self.manipulatedImage.setPixmap(pixmap2)
+            self.manipulatedImage.adjustSize()
+            #cv2.imshow('ab',nouse)
+            #cv2.waitkey()
+            #return noise
+            self.message.setText("")
+        
+        #Display relevant error message
+        except FileNotFoundError:
+            self.message.setText("You have to Load an Image before Adding Noise!")
+
+        except Exception as E:
+            self.message.setText(str(E))
+            print(E)
+
+    def adjCon(self):
+        if (self.adjConWindow is None):
+            try:
+                image=cv2.imread(self.loadedImagePath,1)
+                if(image is None):
+                    raise FileNotFoundError
+                
+                conVal,okPressed=QInputDialog.getText(self,"Adjust Contrast","Enter contrast value:(Make sure you put a point instead of a comma if you use float numbers!)\n" "(default value is 1)",QLineEdit.Normal,"",)
+
+                clahe=cv2.createCLAHE(clipLimit=float(conVal),tileGridSize=(8,8))
+                lab=cv2.cvtColor(image,cv2.COLOR_RGB2LAB) #Convert from BGR to Lab color space
+                l,a,b=cv2.split(lab) #split on 3 diffrent channel
+                l2=clahe.apply(l) #apply CLAHE to the L - channel
+                lab=cv2.merge((l2,a,b))#Merge channels
+                img2=cv2.cvtColor(lab,cv2.COLOR_LAB2BGR) #convert from LAb toBGR
+                cv2.imwrite("./temp.jpg",img2)
+
+                pixmap=QPixmap("./temp.jpg")
+                pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+                self.manipulatedImage.setPixmap(pixmap2)
+                self.manipulatedImage.adjustSize()
+            except FileNotFoundError:
+                self.message.setText("You have to Load an Image before Adjusting Contrast!")
+
+            except Exception as E:
+                self.message.setText(str(E))
 
 
            
