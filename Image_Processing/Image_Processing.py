@@ -59,13 +59,13 @@ class MainWindow(QMainWindow):
         # This for guiding user when deal with an error 
         self.message=QLabel(self)
         self.message.setFont(QFont("Arial",12))
-        self.message.setGeometry(400,50,1450,160)
-        self.message.setStyleSheet("color:white; border:3px solid black;  border-color: gray; border-style: outset;  border-width: 2px; border-radius:8px;background-color:hsl(206,90%,74%);")
-        self.message.setText("Hello")
+        self.message.setGeometry(400,50,1415,160)
+        self.message.setStyleSheet("color:black; border:5px solid black;  border-color: gray; border-style: outset;  border-width: 2px; border-radius:8px;")
+        self.message.setText("")
 
         self.Line=QLabel(self)
         self.Line.setGeometry(370,0,10,990)
-        self.Line.setStyleSheet("border:3px solid gray; border-style:outset; background-color:hsl(206,90%,74%);")
+        self.Line.setStyleSheet("border:3px solid gray; border-style:outset; background-color:gray;")
 
         #File text area widget
         hFile=QLabel(self)
@@ -203,19 +203,19 @@ class MainWindow(QMainWindow):
         #Scale image for screen accordance
         self.loadedImage.setScaledContents(True)
         self.loadedImage.setFixedHeight(int(self.height/2))
-        self.loadedImage.setFixedWidth(int(self.width/3))
+        self.loadedImage.setFixedWidth(int(self.width/2.8))
         self.loadedImagePath=""
         self.loadedImage.move(400,300)
-        self.loadedImage.setStyleSheet("border:5px solid hsl(27,50%,36.9%); border-radius:10px;")
+        self.loadedImage.setStyleSheet("border:5px solid black; border-radius:10px; border-color:gray;")
 
         #Manipulate Image Widget
         self.manipulatedImage=QLabel(self)
         #Scale image for screen accordance
         self.manipulatedImage.setScaledContents(True)
         self.manipulatedImage.setFixedHeight(int(self.height/2))
-        self.manipulatedImage.setFixedWidth(int(self.width/3))
-        self.manipulatedImage.move(int(self.width/1.6),300)
-        self.manipulatedImage.setStyleSheet("color:white; border:5px solid black;  border-color: gray; border-style: outset; border-radius:8px;background-color:hsl(206,90%,74%);")
+        self.manipulatedImage.setFixedWidth(int(self.width/2.8))
+        self.manipulatedImage.move(int(self.width/1.7),300)
+        self.manipulatedImage.setStyleSheet("color:white; border:5px solid black;  border-color: gray; border-style: outset; border-radius:8px;")
 
         #Set coordinate and size of main screen of application
         self.setGeometry(0,0,self.width,self.height)
