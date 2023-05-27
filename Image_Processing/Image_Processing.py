@@ -152,6 +152,21 @@ class MainWindow(QMainWindow):
         rotateButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
         rotateButton.clicked.connect(self.rotate)
 
+        #CCB : Change color balance
+        ccbButton=QPushButton(self)
+        ccbButton.setText("Color Balance")
+        ccbButton.setGeometry(xtop+20,yleft*5+7*buttonHeight,buttonWidth,buttonHeight)
+        ccbButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        ccbButton.clicked.connect(self.ccb)
+
+        #adjBrg: Adjust brightness
+        adjBrgButton=QPushButton(self)
+        adjBrgButton.setText("Adjust Brightness")
+        adjBrgButton.setGeometry(xtop+180,yleft*5+7*buttonHeight,buttonWidth,buttonHeight)
+        adjBrgButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        adjBrgButton.clicked.connect(self.adjBrg)
+
+
 
 
         #Loaded Image widget
@@ -432,6 +447,101 @@ class MainWindow(QMainWindow):
             except Exception as E:
                 self.message.setText(str(E))
                 print(E)
+
+    def ccb(self):
+        if self.warning is None:
+            self.message.setText("This process can take a few seconds!\n Please wait!")
+
+        if self.inputWindow is None:
+            try:
+                if(len(self.loadedImagePath)==0):
+                    raise FileNotFoundError
+                newRGB,okPressed=QInputDialog.getText(self,"Change Color Balance",("Enter your increase or decrease value in format R,G,B\n For example:112,144,96 or 112,-50,-32"),QLineEdit.Normal,"",)
+                image=cv2.imread(self.loadedImagePath)
+
+                ccbImage=image
+                #split new RGB value
+                newR,newG,newB=newRGB.split(",")[0],newRGB.split(",")[1],newRGB.split(",")[2]
+
+                #add new RGB value pixel by pixel
+                for row in ccbImage:
+                    for pixel in row:
+                        if((int(newR)+pixel[2])/255)>=1:
+                            pixel[2]=255
+                        elif((int(newR)+pixel[2])<0):
+                            pixel[2]=0
+                        else:
+                            pixel[2]=pixel[2]+int(newR)
+
+                        if ((int(newG)+pixel[1])/255)>=1:
+                            pixel[1]=255
+                        elif((int(newG)+pixel[1])<0):
+                            pixel[1]=0
+
+                        else:
+                            pixel[1]=pixel[1]+int(newG)
+                        
+                        if((int(newB)+pixel[0])/255)>=1:
+                            pixel[0]=255
+                        elif((int(newB)+pixel[0])<0):
+                            pixel[0]=0
+                        else:
+                            pixel[0]=pixel[0]+int(newB)
+
+                cv2.imwrite("temp.jpg",ccbImage)
+                pixel=QPixmap("./temp.jpg")
+                pixel2=pixel.scaledToWidth(int(self.width/2))
+                self.manipulatedImage.setPixmap(pixel2)
+                self.manipulatedImage.adjustSize()
+                self.message.setText("")
+
+            except FileNotFoundError:
+                self.message.setText("You have to Load an Image before changing color balance!")
+            except Exception as E:
+                self.message.setText("Invalid Input!")
+                print(E)
+
+    def adjBrg(self):
+        if self.adjBrgWindow is None:
+            try:
+                if(len(self.loadedImagePath)==0):
+                    raise FileNotFoundError
+                value,okPressed=QInputDialog.getText(self,"Adjust Brightness","Enter negative or positive brightness value:\n (default value is 0)",QLineEdit.Normal,"",)
+
+                image=cv2.imread(self.loadedImagePath)
+                hsv=cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
+
+                h,s,v=cv2.split(hsv)
+
+                #Find value without its sing mark
+                val=int(re.findall('\d+',value)[0])
+                
+                if (int(value)>0):
+                    v=cv2.add(v,int(val))
+                else:
+                    v=cv2.subtract(v,int(val))
+
+                v[v>255]=255
+                v[v<0]=0
+                final_hsv=cv2.merge((h,s,v))
+                img=cv2.cvtColor(final_hsv,cv2.COLOR_HSV2BGR)
+
+                cv2.imread("temp.jpg",img)
+
+                pixmap=QPixmap("./temp.jpg")
+                pixmap2=pixmap.scaledToWidth(int(self.width/2))
+                self.manipulatedImage.setPixmap(pixmap2)
+                self.manipulatedImage.adjustSize()
+
+            #Display relevant error message
+            except FileNotFoundError:
+                self.message.setText("You have to Load an Image before asjust brightness!")
+
+            except Exception as E:
+                self.message.setText("Invalid input")
+                #self.message.setText(str(E))
+                print(E)
+
 
            
 
