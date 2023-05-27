@@ -166,8 +166,19 @@ class MainWindow(QMainWindow):
         adjBrgButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
         adjBrgButton.clicked.connect(self.adjBrg)
 
+        #adjSat: Adjsut Saturation
+        adjBrgButton=QPushButton(self)
+        adjBrgButton.setText("Adjust Saturation")
+        adjBrgButton.setGeometry(xtop+20,yleft*6+8*buttonHeight,buttonWidth,buttonHeight)
+        adjBrgButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        adjBrgButton.clicked.connect(self.adjSat)
 
-
+        #Detect Edges of Image Button widget
+        detectEdgesButton=QPushButton(self)
+        detectEdgesButton.setText("Detect Edges")
+        detectEdgesButton.setGeometry(xtop+180,yleft*6+8*buttonHeight,buttonWidth,buttonHeight)
+        detectEdgesButton.setStyleSheet("border-radius:5px; border:2px doted black;background-color:green;color:white;")
+        detectEdgesButton.clicked.connect(self.detectEdges)
 
         #Loaded Image widget
         self.loadedImage=QLabel(self)
@@ -541,6 +552,69 @@ class MainWindow(QMainWindow):
                 self.message.setText("Invalid input")
                 #self.message.setText(str(E))
                 print(E)
+
+    def adjSat(self):
+        if self.adjSatWindow is None:
+            try:
+                if (len(self.loadedImagePath) == 0):
+                    raise FileNotFoundError
+                satVal, okPressed = QInputDialog. \
+                    getText(self, "Adjust Saturation",
+                            "Enter saturation value: (Make sure you put a point instead of a comma if you use float numbers!)\n"
+                            "(defalut value is 1)", QLineEdit.Normal, "", )
+
+                image = Image.open(self.loadedImagePath)
+
+                converter = ImageEnhance.Color(image)
+                img2 = converter.enhance(float(satVal))
+
+
+                last = np.array(img2)
+                last  = cv2.cvtColor(last, cv2.COLOR_RGB2BGR)
+                cv2.imwrite("temp.jpg", last)
+
+                pixmap = QPixmap("./temp.jpg")
+                pixmap2 = pixmap.scaledToWidth(int(self.width / 2))
+
+                self.manipulatedImage.setPixmap(pixmap2)
+                self.manipulatedImage.adjustSize()
+                self.message.setText("")
+
+            # display relevant error message
+            except FileNotFoundError:
+                self.message.setText("You have to load an image before adjust saturation!")
+            except Exception as E:
+                self.message.setText(str(E))
+                print(E)
+
+    def detectEdges(self):
+        try:
+            img = cv2.imread(self.loadedImagePath)
+            if (img is None):
+                raise FileNotFoundError
+            img_gray=cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
+            img_blur=cv2.GaussianBlur(img_gray,(3,3),0)
+
+            edges=cv2.Canny(image=img_blur,threshold1=100,threshold2=200) #Canny Edge Detection
+
+
+            edges=np.array(edges)
+            cv2.imwrite("temp.jpg",edges)
+
+            pixmap=QPixmap("./temp.jpg")
+            pixmap2=pixmap.scaledToWidth(int(self.width/2))
+
+
+            self.manipulatedImage.setPixmap(pixmap2)
+            self.manipulatedImage.adjustSize()
+            self.message.setText("")
+
+        #Display relevant error message
+        except FileNotFoundError:
+            self.message.setText("You have to Load an Image before Detecting Edges!")
+        except Exception as E:
+            self.message.setText(str(E))
+            print(E)
 
 
            
