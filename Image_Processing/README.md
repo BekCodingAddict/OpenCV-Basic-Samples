@@ -1,4 +1,25 @@
-# Image Processing 
+# Image Processing
+- ## To Running You have to Install:
+  - [x] PYQT5
+    - ~~~
+       pip install pyqt5
+      ~~~
+  - [x] Python OpenCV
+    - ~~~
+       pip install opencv-python
+      ~~~
+  - [x] Numpy
+    - ~~~
+       pip install Numpy
+      ~~~
+  - [x] Scipy
+    - ~~~
+       pip install scipy 
+      ~~~
+  - [x] Pillow
+    - ~~~
+       pip install pillow
+      ~~~
 
 ## English
 - An image processing OpenCV app refers to an application that utilizes the OpenCV library to perform various operations on images. OpenCV (Open Source Computer Vision Library) is a popular open-source computer vision and image processing library that provides a wide range of functions and algorithms for manipulating and analyzing images and videos.

@@ -56,11 +56,18 @@ class MainWindow(QMainWindow):
         self.imgHeight=0
 
         # Set up message area widget
+
+        #Title of message area
+        titleofmsg=QLabel(self)
+        titleofmsg.setText("🗨 Message Box ")
+        titleofmsg.setFont(QFont("Arial",20))
+        titleofmsg.setStyleSheet("color:gray;")
+        titleofmsg.setGeometry(400,30,300,50)
         # This for guiding user when deal with an error 
         self.message=QLabel(self)
-        self.message.setFont(QFont("Arial",12))
-        self.message.setGeometry(400,50,1415,160)
-        self.message.setStyleSheet("color:black; border:5px solid black;  border-color: gray; border-style: outset;  border-width: 2px; border-radius:8px;")
+        self.message.setFont(QFont("Arial",20))
+        self.message.setGeometry(400,80,1415,160)
+        self.message.setStyleSheet("color:black; border:5px solid black;  border-color: gray; border-style: outset; border-radius:8px;")
         self.message.setText("")
 
         self.Line=QLabel(self)
@@ -97,6 +104,20 @@ class MainWindow(QMainWindow):
         hEdit.setText("Edit")
         hEdit.setFont(QFont("Arial",20))
         hEdit.move(xtop+int(buttonHeight/4),xtop+110)
+
+        #Before Title
+        before=QLabel(self)
+        before.setText("Before")
+        before.setFont(QFont("Arial",20))
+        before.setStyleSheet("width:200px;color:gray;")
+        before.setGeometry(700,250,250,50)
+
+        #After Title
+        after=QLabel(self)
+        after.setText("After")
+        after.setFont(QFont("Arial",20))
+        after.setStyleSheet("color:gray;")
+        after.setGeometry(1420,250,250,50)
 
         #Blur button widget
         blurButton=QPushButton(self)
@@ -252,32 +273,29 @@ class MainWindow(QMainWindow):
             self.message.setText(str(E))
 
     def blur(self):
+
+        # QCoreApplication.exit(0)
+
         try:
-            #access loaded Image
-            image=cv2.imread(self.loadedImagePath)
+            # access loaded Image
+            image = cv2.imread(self.loadedImagePath)
             if(image is None):
                 raise FileNotFoundError
+            # blur image
+            blurImg = cv2.blur(image, (9, 9))
 
-            #Blur Image 
-            blurImg=cv2.blur(image(9,9))
+            # save blurred image temporarily
+            cv2.imwrite("temp.jpg", blurImg)
 
-            #Save blured image temporarly
-            cv2.imwrite("Temp.jpg",blurImg)
-
-            pixmap=QPixmap("./temp.jpg")
-            pixmap2=pixmap.scaledToWidth(int(self.width/2))  
+            pixmap = QPixmap("./temp.jpg")
+            pixmap2 = pixmap.scaledToWidth(int(self.width / 2))
 
             self.manipulatedImage.setPixmap(pixmap2)
             self.manipulatedImage.adjustSize()
-            #Set message text to empty, when process s successfull
-            self.message.setText("") 
+            # set message text to empty, when process s successfull
+            self.message.setText("")
         except FileNotFoundError:
-            msg=QMessageBox()
-            msg.setWindowTitle("Note")
-            msg.setText("You have to Load an Image before Bluring!")
-            x=msg.exec_()
-            self.message.setText("You have to Load an Image before Bluring ☝")
-
+            self.message.setText("You have to load an image before blur!")
         except Exception as E:
             self.message.setText(str(E))
 
@@ -430,20 +448,25 @@ class MainWindow(QMainWindow):
 
     def mirror(self):
         try:
-            image=cv2.imread(self.loadedImagePath)
-            if (image is None):
+            image = cv2.imread(self.loadedImagePath)
+            if(image is None):
                 raise FileNotFoundError
-            
-            mirroredImage=cv2.flip(image,1)
-            cv2.imwrite("temp.jpg",mirroredImage)
 
-            pixmap=QPixmap("./temp.jpg")
-            pixmap2=pixmap.scaledToWidth(int(self.width/2))
+            mirroredImage = cv2.flip(image,1)
+            cv2.imwrite("temp.jpg", mirroredImage)
 
+            pixmap = QPixmap("./temp.jpg")
+            pixmap2 = pixmap.scaledToWidth(int(self.width / 2))
 
             self.manipulatedImage.setPixmap(pixmap2)
             self.manipulatedImage.adjustSize()
             self.message.setText("")
+        # display relevant error
+        except FileNotFoundError:
+            self.message.setText("You have to load an image before mirror!")
+        except Exception as E:
+            self.message.setText(str(E))
+            print(E)
 
         #Display relevant error
         except FileNotFoundError:
@@ -537,42 +560,45 @@ class MainWindow(QMainWindow):
     def adjBrg(self):
         if self.adjBrgWindow is None:
             try:
-                if(len(self.loadedImagePath)==0):
+                if (len(self.loadedImagePath) == 0):
                     raise FileNotFoundError
-                value,okPressed=QInputDialog.getText(self,"Adjust Brightness","Enter negative or positive brightness value:\n (default value is 0)",QLineEdit.Normal,"",)
+                value, okPressed = QInputDialog. \
+                    getText(self, "Adjust Brightness",
+                            "Enter negative or positive brightness value:\n(default value is 0)", QLineEdit.Normal, "", )
 
-                image=cv2.imread(self.loadedImagePath)
-                hsv=cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
+                image = cv2.imread(self.loadedImagePath)
 
-                h,s,v=cv2.split(hsv)
+                hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-                #Find value without its sing mark
-                val=int(re.findall('\d+',value)[0])
-                
-                if (int(value)>0):
-                    v=cv2.add(v,int(val))
+                h, s, v = cv2.split(hsv)
+
+                # find value without its sign mark
+                val = int(re.findall('\d+', value)[0])
+
+                if(int(value)>0):
+                    v = cv2.add(v,int(val))
                 else:
-                    v=cv2.subtract(v,int(val))
+                    v = cv2.subtract(v,int(val))
 
-                v[v>255]=255
-                v[v<0]=0
-                final_hsv=cv2.merge((h,s,v))
-                img=cv2.cvtColor(final_hsv,cv2.COLOR_HSV2BGR)
+                v[v > 255] = 255
+                v[v < 0] = 0
+                final_hsv = cv2.merge((h, s, v))
+                img = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
 
-                cv2.imread("temp.jpg",img)
 
-                pixmap=QPixmap("./temp.jpg")
-                pixmap2=pixmap.scaledToWidth(int(self.width/2))
+                cv2.imwrite("temp.jpg", img)
+
+                pixmap = QPixmap("./temp.jpg")
+                pixmap2 = pixmap.scaledToWidth(int(self.width / 2))
                 self.manipulatedImage.setPixmap(pixmap2)
                 self.manipulatedImage.adjustSize()
 
-            #Display relevant error message
+            # display relevant error message
             except FileNotFoundError:
-                self.message.setText("You have to Load an Image before asjust brightness!")
-
+                self.message.setText("You have to load an image before adjust brightness!")
             except Exception as E:
-                self.message.setText("Invalid input")
-                #self.message.setText(str(E))
+                self.message.setText("invalid input")
+                # self.message.setText(str(E))
                 print(E)
 
     def adjSat(self):
