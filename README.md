@@ -1,5 +1,5 @@
 # About OpenCV...
-- OpenCV (Open Source Computer Vision) is an open-source library of computer vision and image processing functions. It provides a wide range of tools, algorithms, and functions that enable developers to work with images and videos, perform various tasks such as object detection, image recognition, facial analysis, and much more.
+- <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/opencv/opencv-original-wordmark.svg" width="35px" height="35px" title="OpenCV"/> OpenCV (Open Source Computer Vision) is an open-source library of computer vision and image processing functions. It provides a      wide range of tools, algorithms, and functions that enable developers to work with images and videos, perform various tasks such as object detection, image recognition, facial analysis, and much more.
 
   Originally developed by Intel in 1999, OpenCV has become a popular choice for computer vision applications due to its efficiency, portability, and extensive community support. It is written in C++ and offers interfaces for several programming languages, including Python, Java, and MATLAB/Octave.
 
