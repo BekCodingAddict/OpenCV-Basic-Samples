@@ -88,4 +88,31 @@ An image processing OpenCV app can be developed to perform tasks such as:
   - [x] [www.qt.io](https://doc.qt.io/qtforpython-5/)
   - [x] [www.pythonguis.com/pyqt5](https://www.pythonguis.com/topics/pyqt5/#menu)
   - [x] [YouTube.com](https://www.youtube.com/watch?v=rZcdhles6vQ&list=PLCC34OHNcOtpmCA8s_dpPMvQLyHbvxocY)
+
+
+## Reviewing Results:
+- Bluring:
+  <img width="960" alt="Bluring" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/e234948c-5b78-4929-bcc9-ade353154336">
+- Debluring:
+  <img width="960" alt="Debluring" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/6182625f-2b01-44c5-af82-2840284eaeef">
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
   
