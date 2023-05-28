@@ -91,9 +91,9 @@ An image processing OpenCV app can be developed to perform tasks such as:
 
 
 ## Reviewing Results:
-- Bluring:
+- ### Bluring:
   <img width="960" alt="Bluring" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/e234948c-5b78-4929-bcc9-ade353154336">
-- Debluring:
+- ### Debluring:
   <img width="960" alt="Debluring" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/6182625f-2b01-44c5-af82-2840284eaeef">
   
 
