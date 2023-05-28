@@ -91,10 +91,47 @@ An image processing OpenCV app can be developed to perform tasks such as:
 
 
 ## Reviewing Results:
+
 - ### Bluring:
-  - <img width="960" alt="Bluring" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/e234948c-5b78-4929-bcc9-ade353154336">
+  <img width="960" alt="Bluring" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/e234948c-5b78-4929-bcc9-ade353154336">
 - ### Debluring:
   <img width="960" alt="Debluring" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/6182625f-2b01-44c5-af82-2840284eaeef">
+- ### Reversing Color:
+  <img width="960" alt="Reverce Color" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/0bd067eb-0548-44f2-9a9e-c85b729a89fa">
+- ### Gray Scaling Image:
+  <img width="960" alt="GrayImage" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/2a8b907e-b9b8-40de-9904-c8b4d955a086">
+- ### Croping Image:
+  <img width="960" alt="Cropping" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/15b83c34-eaa6-45c2-8f8b-8599055d6a3e">
+- ### Flip Image:
+  <img width="960" alt="Flipping" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/466c547b-e6a0-4d2d-a26c-3bdc7282fd99">
+- ### Mirror Image:
+  <img width="960" alt="Mirroring" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/ebcad8de-0fd2-44a1-86b1-68d9a76cdd67">
+- ### Rotated Image:
+  <img width="960" alt="Rotating" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/fde2e30f-136c-4444-a541-d56f85934f70">
+- ### Color Balancing:
+  <img width="960" alt="Color Balamcing" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/679c71df-bd60-4886-9a81-c2e73befa5f6">
+- ### Adjust Brightmess Image:
+  <img width="960" alt="AdjustBrightness" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/0618fe9d-e648-440f-bcc0-a1b1ca3c1a67">
+- ### Adjust Saturation:
+  <img width="960" alt="Adjust Saturation" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/55e90f7c-e67e-44fc-82df-d6a3277cd2e0">
+- ### Detect Edges:
+  <img width="960" alt="Detecting Edges" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/5a47e748-35bc-4afd-a1b5-61e9ec2d518b">
+- ### Adding Noise:
+  <img width="960" alt="Adding Noise" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/4613ed5c-9404-4bb2-87ab-1ec5302e9b84">
+- ### Adjust Contrasting:
+  <img width="960" alt="Adjust Contract" src="https://github.com/BekCodingAddict/OpenCV-Basic-Samples/assets/70604119/ab126c70-9a81-4d7a-bb8e-0722946075df">
+
+
+
+
+  
+
+
+
+
+
+
+
   
 
 
