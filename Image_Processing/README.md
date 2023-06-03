@@ -1,5 +1,5 @@
 # Image Processing
-- ## To Running You have to Install:
+- ## To Run You have to Install:
   - [x] PYQT5
     - ~~~
        pip install pyqt5
